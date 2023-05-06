@@ -1,0 +1,46 @@
+.main{
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+form{
+    display: flex;
+    gap: 10px;
+}
+section{
+    margin: 50px;
+    padding: 20px;
+}
+.todo-list-section{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+}
+.complete{
+    text-decoration: line-through;
+    color: rgb(174, 174, 174)
+}
+li{
+    list-style-type: none;
+}
+.edit-input{
+    display: none;
+}
+
+.show-edit{
+    display: inline;
+}
+.link-style{
+    border: none;
+    background: none;
+    font-size: 10px; 
+    color: rgb(151, 38, 38)
+}
+.hide{
+    display: none;
+}
+.edit-mode-color{
+    color: green;
+    font-weight: 800;;
+}
