@@ -6,6 +6,7 @@
 form{
     display: flex;
     gap: 10px;
+    width: 400px;
 }
 section{
     margin: 50px;
@@ -39,6 +40,9 @@ li{
     text-align: left;
     padding: 0;
 }
+.add-label-btn{
+    color: green;
+}
 .hide{
     display: none;
 }
@@ -67,3 +71,10 @@ li{
     border-top: none;
     border-bottom: none;
 }
+.label-input{
+    display: none;
+}
+.show-label-input{
+    display: block;
+}
+

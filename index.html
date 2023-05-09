@@ -11,7 +11,9 @@
   <body>
     <div class="main">
       <section class="todo-list-section card" ng-controller="todoController">
+        <h2>Todo List</h2>
         <form name="frm" ng-submit="addTodo()">
+           
             <input name="todoInput" type="text" ng-model="todo"  class="form-control" required/>
             <button ng-disabled="frm.$invalid" class="btn btn-primary">Add</button>
         </form>
@@ -25,9 +27,10 @@
                 <button ng-click="editTodo()" class="link-style" ng-class="{'edit-mode-color' : todo.editMode}">{{todo.editMode? "Save" : "Edit" }}</button> 
             </li>
         </ul>
-        <button ng-click="clearCompleted()">Clear Completed Todos</button>
+        <button ng-click="clearCompleted()" ng-hide="!todos.length" class="btn btn-danger">Clear Completed Todos</button>
       </section>
       <section class="alarm-section card" ng-controller="alarmController">
+        <h2>Alarms</h2>
         <form>
           <select class="form-select" ng-model="time">
           <option selected>Choose:</option>
@@ -37,11 +40,17 @@
         </form>
         <ul class="list-group">
           <li ng-repeat="alarm in alarms track by $index" class="list-group-item" ng-class="{'alarm-on': alarm.on}">
+            
             <div class="left">
+              <input type="text" ng-class="{'show-label-input': alarm.labelMode}" class="label-input"  ng-model="alarm.label">
+              <label class="form-check-label" ng-hide="alarm.labelMode">{{ alarm.label }}</label>
               <label class="form-check-label">{{ alarm.displayTime }}</label>
               <button ng-click="removeAlarm()" class="remove-btn link-style">Remove</button>
             </div> 
+            <div class="right">
+              <button class="add-label-btn link-style" ng-click="toggleLabelInput()">{{alarm.labelMode? "Save" : "Add Label"}}</button> 
               <button ng-click="deactivateAlarm()" class="cancel-btn" ng-class="{'show-cancel-btn': alarm.on}">Cancel</button>
+            </div>
               
           </li>
         </ul>
