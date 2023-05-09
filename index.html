@@ -17,7 +17,7 @@
         </form>
         
         <ul class="list-group">
-            <li ng-repeat="todo in todos" class="list-group-item">
+            <li ng-repeat="todo in todos track by $index" class="list-group-item">
                 <input type="checkbox" ng-model="todo.complete"  class="form-check-input me-1">
                 <label class="form-check-label"  ng-class="{'complete':todo.complete, 'hide' : todo.editMode}">{{ todo.todoLabel }}</label>
                 <input type="text" ng-class="{'show-edit': todo.editMode}" class="edit-input" ng-model="todo.todoLabel"> <br>
@@ -36,14 +36,18 @@
           <button class="btn btn-primary" ng-click="addAlarm()">Add</button>
         </form>
         <ul class="list-group">
-          <li ng-repeat="alarm in alarms" class="list-group-item">
-              <label class="form-check-label"  ng-class="{'complete':todo.complete, 'hide' : todo.editMode}">{{ alarm.displayTime }}</label>
-              <!-- <input type="text" ng-class="{'show-edit': todo.editMode}" class="edit-input" ng-model="todo.todoLabel"> <br>
-              <button ng-click="deleteTodo()" class="link-style">Delete</button>
-              <button ng-click="editTodo()" class="link-style" ng-class="{'edit-mode-color' : todo.editMode}">{{todo.editMode? "Save" : "Edit" }}</button>  -->
+          <li ng-repeat="alarm in alarms track by $index" class="list-group-item" ng-class="{'alarm-on': alarm.on}">
+            <div class="left">
+              <label class="form-check-label">{{ alarm.displayTime }}</label>
+              <button ng-click="removeAlarm()" class="remove-btn link-style">Remove</button>
+            </div> 
+              <button ng-click="deactivateAlarm()" class="cancel-btn" ng-class="{'show-cancel-btn': alarm.on}">Cancel</button>
+              
           </li>
         </ul>
-       
+        <audio id="alarmAudio">
+          <source src="./alarm.wav" >
+        </audio>
       </section>
     </div>
   </body>

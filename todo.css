@@ -11,7 +11,7 @@ section{
     margin: 50px;
     padding: 20px;
 }
-.todo-list-section{
+.todo-list-section, .alarm-section{
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -35,12 +35,35 @@ li{
     border: none;
     background: none;
     font-size: 10px; 
-    color: rgb(151, 38, 38)
+    color: rgb(151, 38, 38);
+    text-align: left;
+    padding: 0;
 }
 .hide{
     display: none;
 }
+.cancel-btn{
+    display: none;
+}
+.show-cancel-btn{
+    display: inline;
+}
 .edit-mode-color{
     color: green;
     font-weight: 800;;
+}
+.alarm-on{
+    background-color: red;
+}
+.alarm-section.card li{
+    display: flex;
+    justify-content: space-between;
+}
+.left{
+    display: flex;
+    flex-direction: column;
+}
+.card>.list-group {
+    border-top: none;
+    border-bottom: none;
 }

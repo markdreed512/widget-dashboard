@@ -2,7 +2,7 @@ const todoApp = angular.module('todoApp', [])
 
 todoApp.controller("todoController", ['$scope', function($scope){
     $scope.todo = ""
-    $scope.todos = []
+    $scope.todos = localStorage.getItem('todos') | []
     $scope.addTodo = function(){
         $scope.todos.push({
             todoLabel: $scope.todo, 
@@ -31,12 +31,42 @@ todoApp.controller("todoController", ['$scope', function($scope){
     }
 }])
  
-todoApp.controller("alarmController", ['$scope', function($scope){
+todoApp.controller("alarmController", ['$scope', '$interval', function($scope, $interval){
     $scope.time = ""
-    $scope.alarms = []
-    $scope.times = ["8:00 AM","8:30 AM","9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","9:29 PM"]
+    $scope.alarms = JSON.parse(localStorage.getItem('alarms')) || [{
+        displayTime: '10:00 AM',
+        alarmTime: '11:00 AM',
+        id: 12,
+        active: true,
+        on: false
+    }]
+    console.log('$scope.alarms: ', $scope.alarms)
+    $scope.times = ["8:00 AM","8:30 AM","9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","10:10 AM"]
+    $scope.deactivateAlarm = function(){
+        this.alarm.active = false
+        this.alarm.on = false
+    }
     $scope.soundAlarm = function(id){
-        console.log("sounding alarm for...", id)
+        $scope.alarms = $scope.alarms.map(alarm => {
+            return alarm.id === id ? {
+                displayTime: alarm.displayTime,
+                alarmTime: alarm.alarmTime,
+                id: alarm.id,
+                active: alarm.active,
+                on: true
+            } : alarm
+        })
+        let myInterval = setInterval(function(){
+            let thisAlarm = $scope.alarms.filter(alarm => {
+                return alarm.id === id
+            })[0]
+            if (thisAlarm.active){
+                document.getElementById('alarmAudio').play()
+            }else{
+                alarm.on = false
+                clearInterval(myInterval)
+            }
+        },2000)
     }
     $scope.addAlarm = function(){
         let timeArr = $scope.time.split(":")
@@ -48,14 +78,24 @@ todoApp.controller("alarmController", ['$scope', function($scope){
         $scope.alarms.push({
             displayTime: $scope.time,
             alarmTime: alarmTime,
-            id: id
+            id: id,
+            active: true,
+            on: false
         })
-        let timer = setInterval(function(){
+        localStorage.setItem('alarms', JSON.stringify($scope.alarms))
+        let timer = $interval(function(){
             if(alarmTime.$H === dayjs().get('hour') && alarmTime.$m === dayjs().get('minute')){
+                console.log("Time for alarm")
                 $scope.soundAlarm(id)
-                clearInterval(timer)
+                $interval.cancel(timer)
             }
         }, 1000)
     }
-
+    $scope.removeAlarm = function(){
+        console.log(this)
+        $scope.alarms = $scope.alarms.filter(alarm => {
+            return alarm.id !== this.alarm.id
+        })
+        localStorage.setItem('alarms', JSON.stringify($scope.alarms))
+    }
 }])
