@@ -12,6 +12,14 @@ section{
     margin: 50px;
     padding: 20px;
 }
+.top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.clock{
+    font-family: 'Roboto Mono', monospace;
+}
 .todo-list-section, .alarm-section{
     display: flex;
     flex-direction: column;
