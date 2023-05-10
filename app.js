@@ -39,7 +39,7 @@ dashboard.controller("todoController", ['$scope', '$window', '$interval' , funct
    
 }])
  
-dashboard.controller("alarmController", ['$scope', '$interval', '$window', function($scope, $interval, $window){
+dashboard.controller("alarmController", ['$scope', '$interval', '$window', '$http', function($scope, $interval, $window, $http){
     $scope.label = ""
     $scope.time = ""
     $scope.alarms = JSON.parse($window.localStorage.getItem('alarms')) || []
@@ -75,20 +75,30 @@ dashboard.controller("alarmController", ['$scope', '$interval', '$window', funct
             }
         },2000)
     }
+    $scope.addAlarmToDb = function(alarm){
+         $http.post('http://localhost:3000/alarm', JSON.stringify(alarm))
+            .then(function successCallback(response){
+                console.log("success! ", response)
+            }, function errorCallback(response){
+                console.log("error: " ,response)
+            });
+    }
     $scope.addAlarm = function(){
         let timeArr = $scope.time.split(":")
         let isPm = timeArr[1].split(' ')[1] === "PM"
         let hour = isPm && +timeArr[0] !== 12 ? +timeArr[0] + 12 : +timeArr[0]
         let minute = +timeArr[1].split(' ')[0]
         let id = Date.now() + Math.random()
-        $scope.alarms.push({
+        let newAlarm = {
             displayTime: $scope.time,
             id: id,
             active: true,
             on: false,
             labelMode: false,
             label: $scope.label
-        })
+        }
+        $scope.alarms.push(newAlarm)
+        $scope.addAlarmToDb(newAlarm)
         $window.localStorage.setItem('alarms', JSON.stringify($scope.alarms))
         let timer = $interval(function(){
             let date = new Date()
